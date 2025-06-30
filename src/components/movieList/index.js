@@ -6,7 +6,6 @@ const apiKey = "723eb7aa864d1055dc72e7edb2a213a7";
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
-  const [isRefeshing, setIsRefeshing] = useState(false);
 
   const fetchMovies = async () => {
     try {
@@ -16,15 +15,8 @@ const MovieList = () => {
       const json = await response.json();
 
       if (json.results) {
-        // setMovies((prv) => [...prv, ...json.results]);
-
-        // if (isRefeshing) {
-            setMovies(json.results);
-        // }else{
-            // setMovies(json.results);
-            // setMovies((prv) => [...prv, ...json.results]);
-        // }
-        
+        setMovies((prv) => [...prv, ...json.results]);
+        // setMovies(json.results);
         // console.log(json.results[0]);
       }
     } catch (error) {
@@ -42,13 +34,9 @@ const MovieList = () => {
     //  fetchMovies()
   };
 
-  const handleRefresh = async() => {
-    console.log('refreshing');
-    setIsRefeshing(true)
-    setPage(1)
-    await fetchMovies()
-    setIsRefeshing(false)
-  };
+  const handleRefresh=()=>{
+
+  }
 
   const renderMovie = ({ item }) => (
     <View style={styles.card}>
@@ -71,8 +59,6 @@ const MovieList = () => {
         renderItem={renderMovie}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
-        onRefresh={handleRefresh}
-        refreshing={isRefeshing}
         ListFooterComponent={<Text> No More Movies</Text>}
       ></FlatList>
     </View>
