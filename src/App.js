@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
@@ -23,13 +23,41 @@ import Home from "./screens/home";
 import About from "./screens/about";
 import Vision from "./screens/vision";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // const Stack = createNativeStackNavigator();
 const Tap = createBottomTabNavigator();
 // const TopTap = createMaterialTopTabNavigator();
 
-
 export default function App() {
+  useEffect(() => {
+    // saveData();
+    // getData();
+  }, []);
+  const saveData = async () => {
+    try {
+      // await AsyncStorage.setItem("User", "Omar");
+      await AsyncStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          userName: "ali",
+          age: 29,
+        })
+      );
+      console.log("item saved successfully");
+    } catch (error) {
+      console.log("error");
+    }
+  };
+  const getData = async () => {
+    try {
+      let val = await AsyncStorage.getItem("userInfo");
+
+      console.log(JSON.parse(val));
+    } catch (error) {
+      console.log("error");
+    }
+  };
   return (
     <NavigationContainer>
       <Tap.Navigator
