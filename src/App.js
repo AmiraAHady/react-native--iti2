@@ -1,5 +1,7 @@
 import { useState } from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Feather from "@expo/vector-icons/Feather";
 import {
   Alert,
   Button,
@@ -20,36 +22,55 @@ import { NavigationContainer } from "@react-navigation/native";
 import Home from "./screens/home";
 import About from "./screens/about";
 import Vision from "./screens/vision";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-const Stack = createNativeStackNavigator();
+// const Stack = createNativeStackNavigator();
+const Tap = createBottomTabNavigator();
+// const TopTap = createMaterialTopTabNavigator();
+
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Home"
+      <Tap.Navigator
         screenOptions={{
-          headerShown: true,
-          headerStyle: { backgroundColor: "pink" },
-          headerTitleStyle: { color: "blue", fontWeight: "bold" },
-          headerTintColor: "green",
-          headerTitleAlign: "center",
-          // animation:'slide_from_bottom'
-          // headerTitle:'My App'
-          headerLeft: () => (
-            <AntDesign name="leftsquare" size={26} color="green" />
-          ),
+          tabBarActiveTintColor: "red",
+          tabBarInactiveTintColor: "blue",
+          headerShown: false,
         }}
       >
-        <Stack.Screen
+        <Tap.Screen
           name="Home"
           component={Home}
           options={{
-            headerTitle: "Home Page",
+            tabBarLabel: "Home Page",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home" size={26} color={color} />
+            ),
+            headerTitle: "hello home",
           }}
         />
-        <Stack.Screen name="About" component={About} />
-        <Stack.Screen name="Vision" component={Vision} />
-      </Stack.Navigator>
+        <Tap.Screen
+          name="About"
+          component={About}
+          options={{
+            tabBarLabel: "Home Page",
+            tabBarIcon: ({ color, size }) => (
+              <AntDesign name="infocirlceo" size={26} color={color} />
+            ),
+          }}
+        />
+        <Tap.Screen
+          name="Vision"
+          component={Vision}
+          options={{
+            tabBarLabel: "Home Page",
+            tabBarIcon: ({ color, size }) => (
+              <Feather name="message-circle" size={26} color={color} />
+            ),
+          }}
+        />
+      </Tap.Navigator>
     </NavigationContainer>
   );
 }
