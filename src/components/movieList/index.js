@@ -1,4 +1,11 @@
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 const apiKey = "723eb7aa864d1055dc72e7edb2a213a7";
 
@@ -6,6 +13,7 @@ const apiKey = "723eb7aa864d1055dc72e7edb2a213a7";
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
+  let totalPages = 0;
 
   const fetchMovies = async () => {
     try {
@@ -16,6 +24,7 @@ const MovieList = () => {
 
       if (json.results) {
         setMovies((prv) => [...prv, ...json.results]);
+        totalPages = json.total_pages;
         // setMovies(json.results);
         // console.log(json.results[0]);
       }
@@ -34,9 +43,7 @@ const MovieList = () => {
     //  fetchMovies()
   };
 
-  const handleRefresh=()=>{
-
-  }
+  const handleRefresh = () => {};
 
   const renderMovie = ({ item }) => (
     <View style={styles.card}>
@@ -58,8 +65,14 @@ const MovieList = () => {
         keyExtractor={(movie) => movie.id.toString()}
         renderItem={renderMovie}
         onEndReached={loadMore}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={<Text> No More Movies</Text>}
+        // onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          page < totalPages ? (
+            <ActivityIndicator size={40} color={"blue"}></ActivityIndicator>
+          ) : (
+            <Text> No More Movies</Text>
+          )
+        }
       ></FlatList>
     </View>
   );
